@@ -22,20 +22,34 @@ export default class EnemyController {
     fireBulletTimerDefault = 100;
     fireBulletTimer = this.fireBulletTimerDefault;
 
-    constructor(canvas, enemyBulletController) {
+    constructor(canvas, enemyBulletController, playerBulletController) {
         this.canvas = canvas;
         this.enemyBulletController = enemyBulletController;
+        this.playerBulletController = playerBulletController;
         this.createEnemies();
     }
 
     draw(ctx) {
         this.decrementMoveDownTimer();
         this.updateVelocityAndDirection();
+        this.collisionDetection();
         this.drawEnemies(ctx);
         this.resetMoveDownTimer();
         this.fireBullet();
     }
 
+    collisionDetection() {
+        this.enemyRows.forEach((enemyRow) => { //loop over rows
+            enemyRow.forEach((enemy, enemyIndex) => { //loop over enemies in each row
+                if (this.playerBulletController.collideWith(enemy)) {
+                    //play enemy-death.wav
+                    enemyRow.splice(enemyIndex, 1); //remove 1 enemy from the number of the index
+                }
+            });
+        });
+        this.enemyRows = this.enemyRows.filter((enemyRow) => enemyRow.length > 0); //Keeps only rows that aren't empty
+    }
+    
     fireBullet() {
         this.fireBulletTimer--;
         if (this.fireBulletTimer <= 0) {

@@ -13,7 +13,7 @@ background.src = "images/space.png";
 
 const playerBulletController = new BulletController(canvas, 2, "red", true); //(Where, Max number of bullets on screen, color, enable sound)
 const enemyBulletController = new BulletController(canvas, 4, "white", false); 
-const enemyController = new EnemyController(canvas, enemyBulletController); //Declares an instance of the Controller
+const enemyController = new EnemyController(canvas, enemyBulletController, playerBulletController); //Declares an instance of the Controller
 const player = new Player(canvas, 3, playerBulletController); //2nd argument is velocity
 
 function game(){
