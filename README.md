@@ -10,4 +10,4 @@ The code is based on [Youtuber, Coding With Adam](https://github.com/CodingWith-
 - Player bullets are removed when *completly* of the screen
 - Enemy bullets are fired from the bottom, rather than the top, of the enemy
 
-[Try it here](https://SimonRibeiro.github.io/space-invaders/index.html)
+[Try it here](https://simonribeiro.github.io/Space-Invaders/)
