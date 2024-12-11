@@ -1,3 +1,4 @@
+import Player from "./Player.js";
 export default class Enemy {
     constructor(x, y, imageNumber){
         this.width = 44; //image dimensions
@@ -17,5 +18,26 @@ export default class Enemy {
     move(xVelocity, yVelocity) {
         this.x += xVelocity;
         this.y += yVelocity;
+    }
+
+/*  collideWith(sprite) {
+        if (this.x + this.width > sprite.x &&
+            this.x < sprite.x + sprite.width &&
+            this.y + this.height > sprite.y &&
+            this.y < sprite.y + sprite.height
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    } 
+    ==> refactor with the bullet collider ; for scrolling only ? */
+
+    reachBase(canvas) {
+        if (this.y + this.height > canvas.height - 75) { //Same pop-off as Player (make a variable ?)
+            return true;
+        } else {
+            return false;
+        }
     }
 }

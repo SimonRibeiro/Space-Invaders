@@ -139,4 +139,9 @@ export default class EnemyController {
             })
         })
     }
+
+    //collideWith(sprite) {
+    reachBase(canvas) {
+        return this.enemyRows.flat().some((enemy) => enemy.reachBase(canvas))
+    }
 }
