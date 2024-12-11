@@ -19,9 +19,12 @@ export default class EnemyController {
     defaultYVelocity = 1; //Can be increased so enemies moves faster downwards than sideways
     moveDownTimerDefault = 30; //Value to count down before changing direction
     moveDownTimer = this.moveDownTimerDefault; //Actual timer to be reset after each countdown
+    fireBulletTimerDefault = 100;
+    fireBulletTimer = this.fireBulletTimerDefault;
 
-    constructor(canvas) {
+    constructor(canvas, enemyBulletController) {
         this.canvas = canvas;
+        this.enemyBulletController = enemyBulletController;
         this.createEnemies();
     }
 
@@ -30,9 +33,21 @@ export default class EnemyController {
         this.updateVelocityAndDirection();
         this.drawEnemies(ctx);
         this.resetMoveDownTimer();
-        //console.log(this.moveDownTimer);
+        this.fireBullet();
     }
 
+    fireBullet() {
+        this.fireBulletTimer--;
+        if (this.fireBulletTimer <= 0) {
+            this.fireBulletTimer = this.fireBulletTimerDefault;
+            const allEnemies = this.enemyRows.flat();
+            const enemyIndex = Math.floor(Math.random() * allEnemies.length); //round down(random(0-1) * total) = random index in the total
+            const enemy = allEnemies[enemyIndex];
+            this.enemyBulletController.shoot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, -3); //Negative value for velocity because of the way the BulletController is built
+            console.log(enemyIndex);
+        }
+    }
+    
     resetMoveDownTimer() {
         if (this.moveDownTimer <= 0) {
             this.moveDownTimer = this.moveDownTimerDefault;

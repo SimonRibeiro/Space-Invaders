@@ -13,10 +13,12 @@ export default class BulletController {
 
         this.shootSound = new Audio("sounds/shoot.wav");
         this.shootSound.volume = 0.1;
+        //this.shootSound = new Audio("sounds/enemyShoot.wav"); ==> Add to Player.js, Enemy.js ... And pass "shootSound" on to BulletController insted of "soundEnabled" ?
+        //this.shootSound.volume = 0.1;
     }
 
     draw(ctx) {
-        this.bullets = this.bullets.filter((bullet) => bullet.y + bullet.height > 0) //Remove bullet from the array once it is off the screen; add "&& bullet.y <= this.canvas.height" for ennemy bullets?
+        this.bullets = this.bullets.filter((bullet) => bullet.y + bullet.height > 0 && bullet.y <= this.canvas.height) //Remove playerBullets once off the screen; add ennemyBullets
         console.log(this.bullets.length)
         this.bullets.forEach((bullet) => bullet.draw(ctx));
         if (this.timeTillNextBulletAllowed > 0) {
@@ -34,7 +36,7 @@ export default class BulletController {
             const bullet = new Bullet(this.canvas, x, y, velocity, this.bulletColor);
             this.bullets.push(bullet);
             
-            if (this.soundEnabled) {
+            if (this.soundEnabled) { //Remove if statement
                 this.shootSound.currentTime = 0; //Reset in case the sound is already being played
                 this.shootSound.play();
             }
