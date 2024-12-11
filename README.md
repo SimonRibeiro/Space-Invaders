@@ -9,5 +9,6 @@ The code is based on [Youtuber, Coding With Adam](https://github.com/CodingWith-
 - Player starting position centered
 - Player bullets are removed when *completly* of the screen
 - Enemy bullets are fired from the bottom, rather than the top, of the enemy
+- Enemies trigger GameOver when reaching player base line, rather than collision
 
 [Try it here](https://simonribeiro.github.io/Space-Invaders/)
