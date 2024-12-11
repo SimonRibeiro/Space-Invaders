@@ -37,7 +37,6 @@ export default class BulletController {
     }
     
     shoot(x, y, velocity, timeTillNextBulletAllowed = 0) { //timeTillNextBulletAllowed = 0 is set as default
-        
         if (
             this.timeTillNextBulletAllowed <= 0 && //When set to positive value, gets decremented at each call of draw to create gap between bullets
             this.bullets.length < this.maxBulletsAtATime //this.bullets.lenght undefined ??? Arraw must be shorter than set maximum
