@@ -1,0 +1,38 @@
+canvas {
+    box-shadow: black 20px 10px 50px;
+}
+header {
+    display: flex;
+    justify-content: center;
+}
+h1 {
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 2.9em;
+    font-family: "Helvetica";
+}
+main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    height: 100vh; /*Viewport Height*/
+    background: linear-gradient(
+        0deg,
+        rgb(97, 98, 99) 0%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+.UI {
+    display: flex;
+	flex-direction: row;
+	align-items: center;
+    justify-content: space-around;
+    width: 600px;
+    height: 100px;
+	margin-bottom: 16px;
+	background-color: black;
+	text-align: center;
+	color: #20ff20;
+}

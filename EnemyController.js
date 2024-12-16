@@ -1,3 +1,4 @@
+import { score, Score, HiScore } from "./index.js";
 import Enemy from "./Enemy.js";
 import MovingDirection from "./MovingDirection.js";
 
@@ -49,6 +50,15 @@ export default class EnemyController {
                     this.enemyDeathSound.currentTime = 0;
                     this.enemyDeathSound.play();
                     enemyRow.splice(enemyIndex, 1); //remove 1 enemy from the number of the index
+
+                    score.current = score.current + 10
+                    if (score.current>score.hi) {
+                        score.hi = score.current
+                    }
+                    Score.textContent = score.current
+                    HiScore.textContent = score.hi
+
+                    //console.log(score)
                 }
             });
         });
@@ -63,7 +73,7 @@ export default class EnemyController {
             const enemyIndex = Math.floor(Math.random() * allEnemies.length); //round down(random(0-1) * total) = random index in the total
             const enemy = allEnemies[enemyIndex];
             this.enemyBulletController.shoot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, -3); //Negative value for velocity because of the way the BulletController is built
-            console.log(enemyIndex);
+            //console.log(enemyIndex);
         }
     }
     
@@ -133,9 +143,10 @@ export default class EnemyController {
         this.enemyMap.forEach((row, rowIndex) => { //forEach instead of map function to convert an Arraw into an other (Allows empty spaces)
             this.enemyRows[rowIndex] = []; //Adds as much rows in enemyMap, to enemyRows
             row.forEach((enemyNumber, enemyIndex) => {
-                if (enemyNumber >0) { //Skips 0s (empty spaces)
+                if (enemyNumber > 0) { 
                     this.enemyRows[rowIndex].push(new Enemy(enemyIndex * 50, rowIndex * 35, enemyNumber)) //enemyIndex: column(x-position); rowIndex: row(y-position); enemyNumber: Type
                 }
+                //Skips 0s (empty spaces)
             })
         })
     }

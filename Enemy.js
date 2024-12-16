@@ -1,6 +1,6 @@
 import Player from "./Player.js";
 export default class Enemy {
-    constructor(x, y, imageNumber){
+    constructor(x, y, imageNumber){ //, frameIndex
         this.width = 44; //image dimensions
         this.height = 32; //image dimensions
 
@@ -8,7 +8,7 @@ export default class Enemy {
         this.y = y;
 
         this.image = new Image();
-        this.image.src = `images/enemy${imageNumber}.png`;
+        this.image.src = `images/enemy${imageNumber}.png`; //.${frameIndex}
     }
 
     draw(ctx){

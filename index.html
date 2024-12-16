@@ -5,34 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/enemy3.png"> <!-- Page icon--> 
     <title>Space Invaders</title>
-    <style>
-        canvas {
-            box-shadow: black 20px 10px 50px;
-        }
-        h1 {
-            margin: 0px;
-            margin-bottom: 10px;
-            font-size: 2.9em;
-            font-family: "Helvetica";
-        }
-        body {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            padding: 0px;
-            margin: 0px;
-            height: 100vh; /*Viewport Height*/
-            background: linear-gradient(
-                0deg,
-                rgb(97, 98, 99) 0%,
-                rgba(0, 0, 0, 0) 100%
-            );
-        }
-    </style>
+    <link href="style.css" rel="stylesheet" >
 </head>
 <body>
-    <h1>Space Invaders</h1>
-    <canvas id="game"></canvas>
+    <header>
+        <!--Logo-->
+        <h1>Space Invaders</h1>
+    </header>
+    <main>
+        <section class="UI">
+            <div>
+                <p>Score:</p>
+                <p class="Score">0</p>
+            </div>
+            <div>
+                <p>Hi-Score:</p>
+                <p class="Hi-Score">0</p>
+            </div>
+            <div>
+                <p>Lives:</p>
+                <p class="Lives">0</p>
+            </div>
+        </section>
+        <canvas id="game"></canvas>
+    </main>
+    <footer>
+        <!--Link to repo with github logo-->
+    </footer>
     <script type="module" src="index.js"></script>
 </body>
 </html> 
