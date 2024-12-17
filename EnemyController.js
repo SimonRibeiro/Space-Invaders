@@ -1,11 +1,11 @@
-import { score, Score, HiScore } from "./index.js";
-import Enemy from "./Enemy.js";
+import { UI, Score, HiScore, Lives } from "./index.js";
+import Enemy from "./Enemy.js"; //pts
 import MovingDirection from "./MovingDirection.js";
 
 export default class EnemyController {
     enemyMap = [
+        [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
         [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 2, 3, 3, 3, 3, 2, 1, 1],
         [1, 1, 2, 3, 3, 3, 3, 2, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -16,15 +16,18 @@ export default class EnemyController {
     currentDirection = MovingDirection.right; //First direction defenition
     xVelocity = 0; //Currently defined, will change on direction change
     yVelocity = 0; //idem
-    defaultXVelocity = 1; //Must be turned negative for moving left
-    defaultYVelocity = 1; //Can be increased so enemies moves faster downwards than sideways
+
     moveDownTimerDefault = 30; //Value to count down before changing direction
     moveDownTimer = this.moveDownTimerDefault; //Actual timer to be reset after each countdown
     fireBulletTimerDefault = 100;
     fireBulletTimer = this.fireBulletTimerDefault;
 
-    constructor(canvas, enemyBulletController, playerBulletController) {
+    constructor(canvas, enemyVelocity, enemyBulletController, playerBulletController) {
         this.canvas = canvas;
+
+        this.defaultXVelocity = enemyVelocity; //Must be turned negative for moving left
+        this.defaultYVelocity = enemyVelocity; //Can be increased so enemies moves faster downwards than sideways
+
         this.enemyBulletController = enemyBulletController;
         this.playerBulletController = playerBulletController;
 
@@ -51,14 +54,18 @@ export default class EnemyController {
                     this.enemyDeathSound.play();
                     enemyRow.splice(enemyIndex, 1); //remove 1 enemy from the number of the index
 
-                    score.current = score.current + 10
-                    if (score.current>score.hi) {
-                        score.hi = score.current
+                    UI.score = UI.score + 10 //pts
+                    Score.textContent = UI.score
+                    if (UI.score>UI.hi) {
+                        UI.hi = UI.score;
+                        HiScore.textContent = UI.hi;
                     }
-                    Score.textContent = score.current
-                    HiScore.textContent = score.hi
-
-                    //console.log(score)
+                    if (UI.score % 1000 === 0) {
+                        UI.lives++;
+                        Lives.textContent = UI.lives;
+                        //play player hit sound
+                        //makes sprite blink
+                    }
                 }
             });
         });
@@ -143,7 +150,7 @@ export default class EnemyController {
         this.enemyMap.forEach((row, rowIndex) => { //forEach instead of map function to convert an Arraw into an other (Allows empty spaces)
             this.enemyRows[rowIndex] = []; //Adds as much rows in enemyMap, to enemyRows
             row.forEach((enemyNumber, enemyIndex) => {
-                if (enemyNumber > 0) { 
+                if (enemyNumber > 0) { //pts
                     this.enemyRows[rowIndex].push(new Enemy(enemyIndex * 50, rowIndex * 35, enemyNumber)) //enemyIndex: column(x-position); rowIndex: row(y-position); enemyNumber: Type
                 }
                 //Skips 0s (empty spaces)

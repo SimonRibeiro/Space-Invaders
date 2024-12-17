@@ -12,16 +12,20 @@ canvas.height = 600;
 const background = new Image();
 background.src = "images/space.png";
 
-let playerBulletController = new BulletController(canvas, 5, "red", true); //(Where, Max number of bullets on screen, color, enable sound)
-let enemyBulletController = new BulletController(canvas, 4, "white", false); 
-let enemyController = new EnemyController(canvas, enemyBulletController, playerBulletController); //Declares an instance of the Controller
+let enemyVelocity = 1;
+
+let playerBulletController = new BulletController(canvas, 5, "red", 1); //(Where, Max number of bullets on screen, color, shootSoundNumber)
+let enemyBulletController = new BulletController(canvas, 4, "white", 2); 
+let enemyController = new EnemyController(canvas, enemyVelocity, enemyBulletController, playerBulletController); //Declares an instance of the Controller
 let player = new Player(canvas, 3, playerBulletController); //2nd argument is velocity
 
-const Score = document.querySelector(".Score")
-const HiScore = document.querySelector(".Hi-Score")
-let score = {
-    current: 0,
-    hi: 0
+const Score = document.querySelector(".Score");
+const HiScore = document.querySelector(".Hi-Score");
+const Lives = document.querySelector(".Lives");
+let UI = {
+    score: 0,
+    hi: 0,
+    lives: 1
 }
 
 let isGameOver = false;
@@ -48,6 +52,8 @@ function displayGameOver() {
         ctx.fillStyle = " #20ff20";
         ctx.font = "70px Arial";
         ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
+
+        //let GamerOver audio = new Audio (didWin ? "winMusic" : "loseMusic")
     }
     return;
 }
@@ -62,11 +68,17 @@ function checkGameOver() {
     }
 
     if (enemyBulletController.collideWith(player)) {
+        UI.lives--;
+        Lives.textContent = UI.lives;
+    }
+
+    if (enemyController.reachBase(canvas)) {//if (enemyController.collideWith(player)) { ==> For scolling levels
+        UI.lives--;
+        Lives.textContent = UI.lives;
         isGameOver = true;
     }
 
-    //if (enemyController.collideWith(player)) { ==> For scolling levels
-    if (enemyController.reachBase(canvas)) {
+    if (UI.lives <= 0)  {
         isGameOver = true;
     }
 
@@ -77,17 +89,24 @@ function checkGameOver() {
 }
 
 function resetGame() {
-    if (!didWin) {
-        score.current = 0
-        Score.textContent = score.current
+    if (UI.lives <= 0) {
+        UI.score = 0;
+        UI.lives = 1;
+        Score.textContent = UI.score;
+        Lives.textContent = UI.lives;
+        enemyVelocity = 1
+    } 
+    if (didWin) {
+        enemyVelocity = enemyVelocity + 0.1;
     }
     isGameOver = false;
     didWin = false;
 
-    playerBulletController = new BulletController(canvas, 5, "red", true); //(Where, Max number of bullets on screen, color, enable sound)
-    enemyBulletController = new BulletController(canvas, 4, "white", false); 
-    enemyController = new EnemyController(canvas, enemyBulletController, playerBulletController); //Declares an instance of the Controller
-    player = new Player(canvas, 3, playerBulletController); //2nd argument is velocity
+    playerBulletController = new BulletController(canvas, 5, "red", 1);
+    enemyBulletController = new BulletController(canvas, 4, "white", 2); 
+    enemyController = new EnemyController(canvas, enemyVelocity, enemyBulletController, playerBulletController);
+    player = new Player(canvas, 3, playerBulletController);
+    
 }
 
 function keydown() { 
@@ -103,6 +122,6 @@ function keyup() {
 document.addEventListener("keydown", keydown); //All lower case
 document.addEventListener("keyup", keyup);
 
-export {score, Score, HiScore}
+export {UI, Score, HiScore, Lives}
 
 setInterval(game, 1000/60) //Calling function 60 times every 1000ms (1s)

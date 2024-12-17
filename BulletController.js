@@ -4,17 +4,14 @@ export default class BulletController {
     bullets = []; //Arraw of all the bullets created
     timeTillNextBulletAllowed = 0; //Needs to be 0 so first press is allowed to shoot
 
-    constructor(canvas, maxBulletsAtATime, bulletColor, soundEnabled) {
+    constructor(canvas, maxBulletsAtATime, bulletColor, shootSoundNumber) {
         //Boiler Plate
         this.canvas = canvas;
         this.maxBulletsAtATime = maxBulletsAtATime;
         this.bulletColor = bulletColor;
-        this.soundEnabled = soundEnabled;
 
-        this.shootSound = new Audio("sounds/shoot.wav");
-        this.shootSound.volume = 0.1;
-        //this.shootSound = new Audio("sounds/enemyShoot.wav"); ==> Add to Player.js, Enemy.js ... And pass "shootSound" on to BulletController insted of "soundEnabled" ?
-        //this.shootSound.volume = 0.1;
+        this.shootSoundNumber = shootSoundNumber;
+        this.shootSound = new Audio(`sounds/shoot${this.shootSoundNumber}.wav`);
     }
 
     draw(ctx) {
@@ -44,10 +41,12 @@ export default class BulletController {
             const bullet = new Bullet(this.canvas, x, y, velocity, this.bulletColor);
             this.bullets.push(bullet);
             
-            if (this.soundEnabled) { //Remove if statement
-                this.shootSound.currentTime = 0; //Reset in case the sound is already being played
-                this.shootSound.play();
+            if (this.shootSoundNumber === 1) {
+                this.shootSound.volume = 0.1;
             }
+            this.shootSound.currentTime = 0; //Reset in case the sound is already being played
+            this.shootSound.play();
+
             this.timeTillNextBulletAllowed = timeTillNextBulletAllowed;
             }
     }
