@@ -33,6 +33,7 @@ export default class EnemyController {
 
         this.enemyDeathSound = new Audio("sounds/enemy-death.wav");
         this.enemyDeathSound.volume = 0.05;
+        //this.enemySound = new Audio("sounds/enemy-sound.wav");
 
         this.createEnemies();
     }
@@ -53,18 +54,19 @@ export default class EnemyController {
                     this.enemyDeathSound.currentTime = 0;
                     this.enemyDeathSound.play();
                     enemyRow.splice(enemyIndex, 1); //remove 1 enemy from the number of the index
-
-                    UI.score = UI.score + 10 //pts
+                    
+                    //make an imported function (needs to import UI, etc. insted of the files calling the funtion)
+                    let preScore = UI.score % 1000;
+                    UI.score = UI.score + enemy.points
                     Score.textContent = UI.score
                     if (UI.score>UI.hi) {
                         UI.hi = UI.score;
                         HiScore.textContent = UI.hi;
                     }
-                    if (UI.score % 1000 === 0) {
+                    //if (UI.score % 1000 === 0) { //Inadapté si le score ne passe pas par l'entier...
+                    if (preScore >= UI.score % 1000) {
                         UI.lives++;
                         Lives.textContent = UI.lives;
-                        //play player hit sound
-                        //makes sprite blink
                     }
                 }
             });
@@ -144,7 +146,9 @@ export default class EnemyController {
             enemy.move(this.xVelocity, this.yVelocity); //Modifies positions for each looped over enemy according to currently defined velocity
             enemy.draw(ctx); //Makes each enemy draw itself
         });
-    }
+        //this.enemySound.currentTime = 0;
+        //this.enemySound.play();
+    }              
 
     createEnemies() { //Converts enemy Numbers to enemy Objects
         this.enemyMap.forEach((row, rowIndex) => { //forEach instead of map function to convert an Arraw into an other (Allows empty spaces)

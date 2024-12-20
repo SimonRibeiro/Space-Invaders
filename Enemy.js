@@ -1,5 +1,5 @@
 export default class Enemy {
-    constructor(x, y, imageNumber){ //, frameIndex, pts
+    constructor(x, y, imageNumber){ //, frameIndex
         this.width = 44; //image dimensions
         this.height = 32; //image dimensions
 
@@ -9,7 +9,7 @@ export default class Enemy {
         this.image = new Image();
         this.image.src = `images/enemy${imageNumber}.png`; //.${frameIndex}
 
-        //pts
+        this.points = 10 * imageNumber
     }
 
     draw(ctx){

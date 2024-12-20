@@ -18,4 +18,12 @@ The code is based on [Youtuber, Coding With Adam](https://github.com/CodingWith-
 - Enemy shoot sound
 - Enemy waves accelerate at each win, resets when lose, stays constant if enemies reach base.
 
+
+- MotherShips spawn at random time and on random side; they fire at random times and are removed once they've crossed the screnn; they give random points, ten fold of grunts when hit
+- Varying enemy points acording to color
+Game-play now identical to original.
+
+//- upgrade.js and upgradeController.js
+//- UFO sound and death sound for motherShipController.js; classic moving sound for enemies
+
 [Try it here](https://simonribeiro.github.io/Space-Invaders/)
