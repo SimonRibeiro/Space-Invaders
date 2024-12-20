@@ -1,6 +1,8 @@
 import EnemyController from "./EnemyController.js";
+import MotherShipController from "./MotherShipController.js";
 import Player from "./Player.js";
 import BulletController from "./BulletController.js";
+
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -12,12 +14,18 @@ canvas.height = 600;
 const background = new Image();
 background.src = "images/space.png";
 
+//let motherShipController = undefined;
+
+//needs to reset
 let enemyVelocity = 1;
+//let motherShipTimer = 500;
 
 let playerBulletController = new BulletController(canvas, 5, "red", 1); //(Where, Max number of bullets on screen, color, shootSoundNumber)
-let enemyBulletController = new BulletController(canvas, 4, "white", 2); 
+let enemyBulletController = new BulletController(canvas, 4, "white", 2);
+let motherShipBulletController = new BulletController(canvas, 3, " #20ff20", 4);
 let enemyController = new EnemyController(canvas, enemyVelocity, enemyBulletController, playerBulletController); //Declares an instance of the Controller
-let player = new Player(canvas, 3, playerBulletController); //2nd argument is velocity
+let motherShipController = new MotherShipController(canvas, motherShipBulletController, playerBulletController);
+let player = new Player(canvas, 3, playerBulletController); //2nd argument is velocity; 
 
 const Score = document.querySelector(".Score");
 const HiScore = document.querySelector(".Hi-Score");
@@ -38,11 +46,21 @@ function game(){
     displayGameOver();
     if (!isGameOver) {
         enemyController.draw(ctx);
+        //motherShipSpawn();
+        motherShipController.draw(ctx); //Just exclude createMotherShip from constructor instead ?
         player.draw(ctx);
         playerBulletController.draw(ctx);
         enemyBulletController.draw(ctx);
+        motherShipBulletController.draw(ctx);
     }
 }
+
+/* function motherShipSpawn() {
+    motherShipTimer--;
+    if (motherShipTimer == 0) {
+        motherShipController = new MotherShipController(canvas, motherShipBulletController, playerBulletController);
+    }
+} */
 
 function displayGameOver() { 
     if (isGameOver) {
@@ -67,15 +85,17 @@ function checkGameOver() {
         return; //return directly from function
     }
 
-    if (enemyBulletController.collideWith(player)) {
+    if (enemyBulletController.collideWith(player) || motherShipBulletController.collideWith(player)) {
         UI.lives--;
         Lives.textContent = UI.lives;
+        //play player hit sound
+        //makes sprite blink
     }
 
     if (enemyController.reachBase(canvas)) {//if (enemyController.collideWith(player)) { ==> For scolling levels
         UI.lives--;
         Lives.textContent = UI.lives;
-        isGameOver = true;
+        isGameOver = true; //moyen de faire repartir les aliens du haut sans les tous les resapwn ?
     }
 
     if (UI.lives <= 0)  {
@@ -103,14 +123,19 @@ function resetGame() {
     didWin = false;
 
     playerBulletController = new BulletController(canvas, 5, "red", 1);
-    enemyBulletController = new BulletController(canvas, 4, "white", 2); 
+    enemyBulletController = new BulletController(canvas, 4, "white", 2);
+    motherShipBulletController = new BulletController(canvas, 3, " #20ff20", 4);
     enemyController = new EnemyController(canvas, enemyVelocity, enemyBulletController, playerBulletController);
+    // if (UI.lives > 0) only rest position ? (without: prevents player from going to next wave witch would be more challenging)
+    motherShipController = new MotherShipController(canvas, motherShipBulletController, playerBulletController);
+    //call function to count timer before declaring motherShipController
+    //motherShipTimer = 500;
     player = new Player(canvas, 3, playerBulletController);
-    
+
 }
 
 function keydown() { 
-    if (event.code == "Space") {
+    if (event.code == "Space") { // || "Enter" ? ou juste "Enter" ? => for pause function
         spacePressed = true;
     }
 };

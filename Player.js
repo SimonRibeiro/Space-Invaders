@@ -50,10 +50,10 @@ export default class Player {
     }
     
     keydown = event => { //Needs to be in arrow function format for the this proprety to function correctly
-        if (event.code == "ArrowRight") {
+        if (event.code == "ArrowRight") { // || "D"
             this.rightPressed = true;
         }
-        if (event.code == "ArrowLeft") {
+        if (event.code == "ArrowLeft") { // || "Q"
             this.leftPressed = true;
         }
         if (event.code == "Space") {
@@ -62,10 +62,10 @@ export default class Player {
     };
 
     keyup = event => {
-        if (event.code == "ArrowRight") {
+        if (event.code == "ArrowRight") { // || "D"
             this.rightPressed = false;
         }
-        if (event.code == "ArrowLeft") {
+        if (event.code == "ArrowLeft") { // || "Q"
             this.leftPressed = false;
         }
         if (event.code == "Space") {
