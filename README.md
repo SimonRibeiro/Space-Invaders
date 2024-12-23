@@ -22,6 +22,8 @@ The code is based on [Youtuber, Coding With Adam](https://github.com/CodingWith-
 - MotherShips spawn at random time and on random side; they fire at random times and are removed once they've crossed the screnn; they give random points, tenfold of grunts when hit
 - Varying enemy points acording to color
 
+- Added Pause and Escape
+
 
 
 //- UFO sound and death sound for motherShipController.js; classic moving sound for enemies

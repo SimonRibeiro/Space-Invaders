@@ -36,15 +36,19 @@ let UI = {
     lives: 1
 }
 
-let isGameOver = false;
+let isGameOver = true;
 let didWin = false;
-let spacePressed = false;
+let paused = true;
+let escapePressed = false;
+let enterPressed = false;
+let enterTimer = 10; //prevents input spam
 
 function game(){
-    checkGameOver();
+    decrementEnterTimer();
+    checkState();
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-    displayGameOver();
-    if (!isGameOver) {
+    displayText();
+    if (!isGameOver && !paused) {
         enemyController.draw(ctx);
         //motherShipSpawn();
         motherShipController.draw(ctx); //Just exclude createMotherShip from constructor instead ?
@@ -62,8 +66,16 @@ function game(){
     }
 } */
 
-function displayGameOver() { 
-    if (isGameOver) {
+function displayText() { 
+    if (isGameOver && paused) {
+        let text = "Start";
+        let textOffset = 2.75
+
+        ctx.fillStyle = " #20ff20";
+        ctx.font = "70px Arial";
+        ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
+
+    } else if (isGameOver) {
         let text = didWin ? "You Win" : "Game Over";
         let textOffset = didWin ? 3.5 : 5;
 
@@ -72,17 +84,42 @@ function displayGameOver() {
         ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
 
         //let GamerOver audio = new Audio (didWin ? "winMusic" : "loseMusic")
+
+    } else if (paused) {
+        let text = "Pause";
+        let textOffset = 3
+
+        ctx.fillStyle = " #20ff20";
+        ctx.font = "70px Arial";
+        ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
     }
-    return;
 }
 
-function checkGameOver() {
+function checkState() {
     if (isGameOver) {
-        if (spacePressed) {
+        if (enterPressed && enterTimer <= 0) {
+            enterTimer = 10;
             resetGame();
             return;
         }
-        return; //return directly from function
+        //return;
+    } else if (!paused) {
+        if (enterPressed && enterTimer <= 0) {
+            enterTimer = 10;
+            paused = true;
+            return;
+        }
+        //return;
+    } else if (paused) {
+        if (enterPressed && enterTimer <= 0) {
+            enterTimer = 10;
+            paused = false;
+            return;
+        }
+        if (escapePressed) {
+            resetGame();
+            return;
+        }
     }
 
     if (enemyBulletController.collideWith(player) || motherShipBulletController.collideWith(player)) {
@@ -108,6 +145,12 @@ function checkGameOver() {
     }
 }
 
+function decrementEnterTimer () {
+    if (enterTimer > 0) {
+        enterTimer--;
+    }
+}
+
 function resetGame() {
     if (UI.lives <= 0) {
         UI.score = 0;
@@ -121,6 +164,7 @@ function resetGame() {
     }
     isGameOver = false;
     didWin = false;
+    paused = false;
 
     playerBulletController = new BulletController(canvas, 5, "red", 1);
     enemyBulletController = new BulletController(canvas, 4, "white", 2);
@@ -135,13 +179,19 @@ function resetGame() {
 }
 
 function keydown() { 
-    if (event.code == "Space") { // || "Enter" ? ou juste "Enter" ? => for pause function
-        spacePressed = true;
+    if (event.code == "Escape") { // || "Enter" ? ou juste "Enter" ? => for pause function
+        escapePressed = true;
+    }
+    if (event.code == "Enter") {
+        enterPressed = true;
     }
 };
 function keyup() { 
-    if (event.code == "Space") {
-        spacePressed = false;
+    if (event.code == "Escape") {
+        escapePressed = false;
+    }
+    if (event.code == "Enter") {
+        enterPressed = false;
     }
 };
 document.addEventListener("keydown", keydown); //All lower case
