@@ -25,11 +25,9 @@ The code is based on [Youtuber, Coding With Adam](https://github.com/CodingWith-
 - Added Pause and Escape
 
 
-
-//- UFO sound and death sound for motherShipController.js; classic moving sound for enemies
-//- ennemy wave acceleration as their number shortens ? gameplays in modern/classic modes
-//-Game-play now identical to original.
-
-//- upgrade.js and upgradeController.js
+### In developement
+- UFO sound and death sound for motherShipController.js; classic moving sound for enemies
+- ennemy wave acceleration as their number shortens ? gameplays in modern/classic modes
+- upgrade.js and upgradeController.js for upgrades droped at MotherShips death
 
 [Try it here](https://simonribeiro.github.io/Space-Invaders/)
