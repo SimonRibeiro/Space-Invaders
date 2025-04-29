@@ -7,7 +7,7 @@ The code is based on [Youtuber, Coding With Adam](https://github.com/CodingWith-
 ## Improvements made on the tutorial's code:
 
 - Player starting position centered
-- Player bullets are removed when *completly* of the screen
+- Player bullets are removed when *completely* of the screen
 - Enemy bullets are fired from the bottom, rather than the top, of the enemy
 - Enemies trigger GameOver when reaching player base line, rather than collision
 
